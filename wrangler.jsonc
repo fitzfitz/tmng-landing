@@ -1,8 +1,9 @@
 {
-  "main": "dist/_worker.js/index.js",
   "name": "tmng-landing",
+  "pages_build_output_dir": "./dist",
   "compatibility_date": "2026-01-23",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "main": "dist/_worker.js/index.js",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",
