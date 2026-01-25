@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Colors - TMNG Crystal Theme (Violet/Glass) */
+  --color-obsidian-950: #0f0728; /* Deep Indigo Fallback */
+  --color-obsidian-900: #1e1b4b; /* Indigo 950 */
+  --color-obsidian-800: #312e81; /* Indigo 900 (Borders) */
+  
+  /* Brand - Primary (Fuchsia Glow) */
+  --color-primary: #e879f9; /* Fuchsia 400 */
+  --color-primary-foreground: #020617;
+  --color-primary-hover: #fae8ff; /* Fuchsia 100 */
+
+  /* Brand - Secondary (Deep Purple) */
+  --color-secondary: #4c1d95; /* Violet 900 */
+  --color-secondary-foreground: #ffffff;
+  --color-secondary-hover: #6d28d9;
+
+  /* Brand - Accent (Pink) */
+  --color-accent: #ec4899; /* Pink 500 */
+  --color-accent-foreground: #ffffff;
+  --color-accent-hover: #f472b6;
+  
+  /* Brand - Destructive (Red) */
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-destructive-hover: #dc2626;
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;   /* Increased for softer look */
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  
+  /* Control Dimensions */
+  --control-h-sm: 2.25rem;
+  --control-h-md: 2.75rem;
+  --control-h-lg: 3.5rem;
+  
+  --control-px-sm: 1rem;
+  --control-px-md: 1.5rem;
+  --control-px-lg: 2rem;
+
+  --control-text-sm: 0.875rem;
+  --control-text-md: 1rem;
+  --control-text-lg: 1.125rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Deep Violet Gradient Background */
+    background-color: var(--color-obsidian-950);
+    color: white;
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    background-color: transparent;
+    position: relative;
+  }
+  
+  /* Fixed Blurred Background Element */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url('/images/full_page_glass_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(19px); /* Blurred Background */
+    transform: scale(1.1); /* Scale up to hide blurred edges */
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    background-color: transparent; /* Let HTML background shine through */
+  }
+
+  /* Glass Utilities */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Frosted Card - Standard */
+  .glass-card {
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.08) 0%, 
+      rgba(255, 255, 255, 0.01) 50%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
+    backdrop-filter: blur(24px) saturate(120%);
+    -webkit-backdrop-filter: blur(24px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.4); 
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset; /* Inner Edge */
+  }
+
+  /* Strong Glass - For Featured Elements */
+  .glass-card-strong {
+    background: linear-gradient(
+      145deg, 
+      rgba(255, 255, 255, 0.12) 0%, 
+      rgba(255, 255, 255, 0.02) 40%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    backdrop-filter: blur(40px) saturate(150%);
+    -webkit-backdrop-filter: blur(40px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.5); /* Strong rim light */
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 20px 40px -5px rgba(0, 0, 0, 0.3),
+      0 0 20px -5px rgba(236, 72, 153, 0.3), /* Fuchsia glow */
+      inset 0 0 30px rgba(255, 255, 255, 0.05); /* Inner Depth */
+  }
+}
+
+@utility typography-h1 {
+  @apply text-5xl md:text-7xl font-bold tracking-tight leading-none text-white drop-shadow-lg;
+}
+
+@utility typography-h2 {
+  @apply text-3xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md;
+}
+
+@utility typography-h3 {
+  @apply text-2xl font-semibold tracking-tight text-white/90;
+}
+
+@utility typography-h4 {
+  @apply text-xl font-semibold tracking-tight text-white/90;
+}
+
+@utility typography-lead {
+  @apply text-xl text-purple-100/80 font-normal leading-relaxed;
+}
+
+@utility typography-body {
+  @apply text-base leading-7 text-purple-200/70;
+}
+
+@utility typography-body-sm {
+  @apply text-sm text-purple-300/60 leading-snug;
+}
+
+@utility typography-caption {
+  @apply text-xs text-purple-300/80 font-medium uppercase tracking-widest;
+}
+
+@utility typography-mono {
+  @apply font-mono text-sm text-fuchsia-400;
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@utility animate-float-delayed {
+  animation: float 6s ease-in-out 3s infinite;
+}
+
+@utility transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+@layer base {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotateX(60deg) translateZ(var(--tz, 0px)); }
+    50% { transform: translateY(-10px) rotateX(60deg) translateZ(var(--tz, 0px)); }
+  }
+}

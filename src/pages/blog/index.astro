@@ -1,0 +1,195 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import { Container, Typography } from "@/components/ui";
+import PostCard from "@/features/blog/post-card.astro";
+
+// Blog Data with Enhanced Metadata
+const featuredPost = {
+    title: "The Future of Digital Architecture",
+    excerpt: "Exploring how modern frameworks like Astro are reshaping the web landscape with island architecture and zero-js baselines.",
+    date: "Jan 24, 2026",
+    category: "Technology",
+    slug: "future-of-digital-architecture",
+    image: "/images/blog/tech-future.png",
+    author: { name: "Alex Chen", avatar: "AC" },
+    readTime: "8 min read"
+};
+
+const posts = [
+  {
+    title: "Designing for Clarity",
+    excerpt: "Why minimal design systems often outperform complex interfaces in conversion and user retention metrics.",
+    date: "Jan 18, 2026",
+    category: "Design",
+    slug: "designing-for-clarity",
+    image: "/images/blog/design-clarity.png",
+    author: { name: "Sarah Miller", avatar: "SM" },
+    readTime: "5 min read"
+  },
+  {
+    title: "Performance First",
+    excerpt: "A deep dive into Core Web Vitals and why shaving milliseconds off your load time matters for SEO.",
+    date: "Jan 10, 2026",
+    category: "Engineering",
+    slug: "performance-first",
+    image: "/images/blog/performance-speed.png",
+    author: { name: "James Wilson", avatar: "JW" },
+    readTime: "6 min read"
+  },
+  {
+    title: "The API Economy",
+    excerpt: "How composable architecture is enabling faster shipping cycles for enterprise teams.",
+    date: "Dec 12, 2025",
+    category: "Strategy",
+    slug: "api-economy",
+    image: "/images/projects/fintech.png", // Reusing asset
+    author: { name: "Alex Chen", avatar: "AC" },
+    readTime: "4 min read"
+  },
+  {
+    title: "AI in Prototyping",
+    excerpt: "Using generative models to accelarate the wireframing phase of product development.",
+    date: "Nov 28, 2025",
+    category: "AI Research",
+    slug: "ai-prototyping",
+    image: "/images/projects/ai-nexus.png", // Reusing asset
+    author: { name: "Sarah Miller", avatar: "SM" },
+    readTime: "7 min read"
+  }
+];
+
+const categories = [
+    { name: "All Topics", count: 12, active: true },
+    { name: "Engineering", count: 5, active: false },
+    { name: "Design Systems", count: 3, active: false },
+    { name: "Strategy", count: 2, active: false },
+    { name: "AI Research", count: 2, active: false }
+];
+---
+
+<BaseLayout title="Blog | TMNG" description="Insights on web development, design, and digital strategy.">
+  
+  {/* Dark Hero Section - Featured Post */}
+  <section class="pt-32 pb-20 bg-obsidian-950/50 relative overflow-hidden">
+     <div class="absolute inset-0 bg-linear-to-b from-fuchsia-900/10 to-transparent pointer-events-none"></div>
+     <Container>
+        <div class="mb-12">
+            <Typography variant="caption" className="text-fuchsia-400 mb-2">Editor's Choice</Typography>
+            <Typography variant="h1" className="text-white">Latest Insights</Typography>
+        </div>
+
+        {/* Featured Post Card (Dark Mode) */}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center glass-card-strong rounded-3xl p-8 lg:p-12 hover:shadow-[0_0_50px_-10px_rgba(232,121,249,0.2)] transition-shadow duration-500 cursor-pointer group">
+            <div class="lg:col-span-7 h-64 lg:h-96 rounded-2xl overflow-hidden relative">
+                <div class="absolute inset-0 bg-obsidian-950/20 group-hover:bg-transparent transition-colors z-10"></div>
+                <img src={featuredPost.image} alt={featuredPost.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            </div>
+            <div class="lg:col-span-5 flex flex-col justify-center">
+                 <div class="flex items-center gap-3 mb-6">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-fuchsia-500 text-white shadow-[0_0_15px_rgba(232,121,249,0.5)]">
+                        {featuredPost.category}
+                    </span>
+                    <span class="text-purple-200/60 text-sm">{featuredPost.date}</span>
+                 </div>
+                 <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight group-hover:text-fuchsia-300 transition-colors">
+                    {featuredPost.title}
+                 </h2>
+                 <p class="text-purple-100/80 text-lg leading-relaxed mb-8">
+                    {featuredPost.excerpt}
+                 </p>
+                 <div class="flex items-center gap-4">
+                     <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-sm">
+                        {featuredPost.author.avatar}
+                     </div>
+                     <div>
+                        <div class="text-white font-medium">{featuredPost.author.name}</div>
+                        <div class="text-purple-300/60 text-xs">{featuredPost.readTime}</div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+     </Container>
+  </section>
+
+  {/* Light Content Body */}
+  <section class="py-20 bg-slate-50 border-t border-black/5 min-h-[800px]">
+    <Container>
+        <div class="flex flex-col lg:flex-row gap-12">
+            
+            {/* Main Content - Grid */}
+            <div class="w-full lg:w-2/3">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {posts.map(post => (
+                    <PostCard {...post} variant="light" />
+                    ))}
+                </div>
+                
+                {/* Pagination Placeholder */}
+                <div class="mt-16 flex justify-center">
+                    <button class="px-6 py-3 rounded-full border border-slate-200 text-slate-600 font-medium hover:bg-white hover:shadow-md transition-all">
+                        Load More Articles
+                    </button>
+                </div>
+            </div>
+
+            {/* Sticky Sidebar */}
+            <div class="w-full lg:w-1/3 lg:pl-12">
+                <div class="sticky top-32 space-y-12">
+                    
+                    {/* Search */}
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Search articles..." 
+                            class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/20 focus:border-fuchsia-500 transition-all shadow-sm"
+                        />
+                        <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    {/* Categories */}
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-6">Explore Topics</h3>
+                        <div class="space-y-2">
+                            {categories.map(cat => (
+                                <button class={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                                    cat.active 
+                                    ? "bg-obsidian-900 text-white shadow-lg shadow-obsidian-900/20" 
+                                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-100"
+                                }`}>
+                                   <span class="font-medium">{cat.name}</span>
+                                   <span class={`text-xs px-2 py-0.5 rounded-full ${cat.active ? "bg-white/20 text-white" : "bg-slate-100 text-slate-400"}`}>
+                                       {cat.count}
+                                   </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Newsletter */}
+                    <div class="bg-obsidian-950 rounded-3xl p-8 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/20 blur-[50px] rounded-full"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-xl font-bold text-white mb-2">Weekly Digest</h3>
+                            <p class="text-purple-200/70 text-sm mb-6">Get the latest tech trends in your inbox. No spam, just value.</p>
+                            <div class="space-y-3">
+                                <input 
+                                    type="email" 
+                                    placeholder="your@email.com" 
+                                    class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-fuchsia-500 transition-colors"
+                                />
+                                <button class="w-full py-3 rounded-xl bg-white text-obsidian-950 font-bold hover:bg-fuchsia-50 transition-colors">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </Container>
+  </section>
+</BaseLayout>

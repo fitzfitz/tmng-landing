@@ -1,0 +1,151 @@
+---
+import { Container, Typography, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui";
+import { NetworkMesh } from "@/components/effects/network-mesh";
+import { HolographicStack } from "@/components/effects/holographic-stack";
+
+const services = [
+  {
+    title: "UI/UX Design",
+    description: "Clean, user-centric interfaces designed for clarity and conversion.",
+    icon: "✤"
+  },
+  {
+    title: "Web Development",
+    description: "Robust, scalable codebases built with modern technologies like Astro and React.",
+    icon: "⚡"
+  },
+  {
+    title: "System Architecture",
+    description: "Planned, structured, and secure backend systems for scalable growth.",
+    icon: "◈"
+  }
+];
+---
+
+<section class="py-32 relative overflow-hidden">
+  {/* Grid Background Pattern */}
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.03] pointer-events-none"></div>
+
+  <Container className="relative z-10">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+      <div class="max-w-xl">
+        <Typography variant="caption" className="text-primary mb-2 block tracking-widest">CORE CAPABILITIES</Typography>
+        <Typography variant="h2" className="text-white mb-6">Engineering Digital Dominance</Typography>
+        <Typography variant="body" className="text-purple-300">
+          We don't just build websites; we engineer high-performance digital ecosystems designed to scale.
+        </Typography>
+      </div>
+      <div class="hidden md:block">
+        <div class="text-right">
+             <div class="text-3xl font-bold text-white">03</div>
+             <div class="text-sm text-purple-300 uppercase tracking-wider">Core Pillars</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 auto-rows-[minmax(300px,auto)]">
+      
+      {/* Service 1: Architecture (Main Feature) */}
+      <div class="group lg:col-span-8 glass-card-strong rounded-3xl p-10 relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(232,121,249,0.3)]">
+         <div class="absolute top-0 right-0 w-96 h-96 bg-fuchsia-500/10 blur-[100px] rounded-full group-hover:bg-fuchsia-500/20 transition-colors duration-700"></div>
+         
+         {/* Background Network Animation */}
+         <div class="absolute inset-0 pointer-events-none">
+            <NetworkMesh client:load className="w-full h-full opacity-60" />
+         </div>
+
+         <div class="relative z-10 h-full flex flex-col justify-between">
+            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-fuchsia-400 text-3xl mb-8 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(232,121,249,0.2)]">
+              ◈
+            </div>
+            <div>
+               <h3 class="text-4xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">System Architecture</h3>
+               <p class="text-purple-100 text-lg leading-relaxed max-w-2xl mb-8">
+                 Scalable, secure, and resilient backend infrastructures. We design systems that handle millions of requests without breaking a sweat.
+               </p>
+               <div class="grid grid-cols-2 gap-4">
+                  {['Microservices', 'Cloud Native', 'Database Design', 'API Strategy'].map(item => (
+                    <div class="flex items-center gap-3 text-sm font-medium text-purple-200/80">
+                        <div class="w-1.5 h-1.5 rounded-full bg-fuchsia-500 shadow-[0_0_10px_rgba(232,121,249,0.8)]"></div>
+                        {item}
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </div>
+
+      {/* Service 2: Development (Tall Side) */}
+      <div class="group lg:col-span-4 lg:row-span-2 glass-card rounded-3xl p-10 relative overflow-hidden transition-all duration-500 flex flex-col hover:border-white/20">
+         <div class="absolute bottom-0 left-0 w-full h-2/3 bg-linear-to-t from-fuchsia-900/20 to-transparent opacity-50"></div>
+         
+         {/* Top Icon */}
+         <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 text-2xl mb-8 group-hover:rotate-12 transition-transform duration-500 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
+            ⚡
+         </div>
+
+         {/* 3D Holographic Stack (Refined & Interactive) */}
+         <HolographicStack client:visible />
+
+         <div class="relative z-10 mt-6">
+             <h3 class="text-2xl font-bold text-white mb-4">Full-Stack Dev</h3>
+             <p class="text-purple-200 leading-relaxed mb-6 text-sm">
+               From reactive frontends to robust backends, we write clean, maintainable code using the modern stack.
+             </p>
+             <div class="flex flex-wrap gap-2">
+                {['Next.js', 'React', 'TypeScript', 'Node.js', 'GraphQL', 'PostgreSQL', 'Redis', 'Docker', 'AWS'].map(tech => (
+                   <div class="px-2.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[10px] text-purple-200 font-mono uppercase tracking-wider hover:bg-white/10 transition-colors cursor-default hover:border-emerald-500/30 hover:text-emerald-300">
+                      {tech}
+                   </div>
+                ))}
+             </div>
+         </div>
+      </div>
+
+      {/* Service 3: Design (Bottom Wide) */}
+      <div class="group lg:col-span-8 glass-card rounded-3xl p-10 relative overflow-hidden transition-all duration-500 hover:border-white/20">
+          <div class="flex flex-col md:flex-row gap-12 items-center">
+             <div class="w-full md:w-1/2">
+                <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+                  ✤
+                </div>
+                <h3 class="text-3xl font-bold text-white mb-4">UI/UX Design</h3>
+                <p class="text-purple-200 leading-relaxed text-lg">
+                  Interfaces that feel inevitable. We combine aesthetic precision with user behavior data.
+                </p>
+             </div>
+             
+             {/* Interactive UI Mockup */}
+             <div class="w-full md:w-1/2 relative h-56 rounded-xl bg-obsidian-950/30 border border-white/10 overflow-hidden group-hover:shadow-[0_0_40px_-10px_rgba(34,211,238,0.3)] transition-all duration-500 p-4">
+                <div class="w-full h-full flex gap-3">
+                    {/* Sidebar */}
+                    <div class="w-16 h-full rounded-lg bg-white/5 border border-white/5 flex flex-col gap-2 p-2">
+                        <div class="w-full aspect-square rounded bg-cyan-500/20"></div>
+                        <div class="w-full h-1 rounded bg-white/5"></div>
+                        <div class="w-full h-1 rounded bg-white/5"></div>
+                    </div>
+                    {/* Content */}
+                    <div class="flex-1 h-full flex flex-col gap-3">
+                        <div class="w-full h-8 rounded-lg bg-white/5 border border-white/5 flex items-center px-3 gap-2">
+                             <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                             <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                             <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <div class="flex-1 rounded-lg bg-linear-to-br from-white/5 to-transparent border border-white/5 relative overflow-hidden">
+                             <div class="absolute bottom-4 right-4 w-12 h-12 rounded-full border border-cyan-500/30 bg-cyan-500/10 flex items-center justify-center">
+                                 <div class="w-2 h-2 bg-cyan-400 rounded-full animate-ping"></div>
+                             </div>
+                             {/* Cursor */}
+                             <div class="absolute top-1/2 left-1/2 w-4 h-4 bg-white mix-blend-overlay -translate-x-1/2 -translate-y-1/2 rotate-12 drop-shadow-lg animate-pulse">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.636 21.066l1.393-12.723 9.408 8.441-5.698 1.15-5.103 3.132z"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+      </div>
+
+    </div>
+  </Container>
+</section>
