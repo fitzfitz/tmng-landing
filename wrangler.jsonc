@@ -3,7 +3,6 @@
   "pages_build_output_dir": "./dist",
   "compatibility_date": "2026-01-23",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "main": "dist/_worker.js/index.js",
   "observability": {
     "enabled": true,
   },
