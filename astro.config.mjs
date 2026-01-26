@@ -8,10 +8,11 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://tmng.my.id",
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
 
   integrations: [react(), sitemap()],
-  adapter: cloudflare()
+  adapter: cloudflare(),
 });
