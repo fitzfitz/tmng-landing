@@ -11,9 +11,22 @@ export default function ContactForm() {
     setStatus("submitting");
 
     const formData = new FormData(e.currentTarget);
-    // Replace with your actual Access Key from web3forms.com
-    formData.append("access_key", import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY);
-    formData.append("botcheck", ""); // Honeypot to prevent spam
+
+    // Safety Check: Ensure Key Exists
+    const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      console.error("⛔ CRITICAL: Missing Web3Forms Access Key!");
+      console.error(" lokking for: PUBLIC_WEB3FORMS_ACCESS_KEY");
+      console.error(" If Local: Restart 'npm run dev'");
+      console.error(
+        " If Production: Add to Cloudflare Pages Settings -> Environment Variables",
+      );
+      setStatus("error");
+      return;
+    }
+
+    formData.append("access_key", accessKey);
+    formData.append("botcheck", ""); // Honeypot
 
     // DEBUG: Check what is actually being sent
     console.log("Submitting Form Data:", Object.fromEntries(formData));
