@@ -1,0 +1,34 @@
+---
+const siteUrl = Astro.site ? Astro.site.toString() : "https://tmng.my.id";
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "TMNG",
+  "url": siteUrl,
+  "logo": `${siteUrl}public/favicon.svg`,
+  "sameAs": [
+    "https://twitter.com/tmng_agency", 
+    "https://github.com/fitzfitz"
+  ],
+  "description": "Premier web agency focused on clarity, performance, and structured design."
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "TMNG",
+  "url": siteUrl,
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${siteUrl}search?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

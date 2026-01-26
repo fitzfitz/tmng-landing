@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import Header from "@/components/layout/header.astro";
 import Footer from "@/components/layout/footer.astro";
 import MetaTags from "@/components/seo/meta-tags.astro";
+import Schema from "@/components/seo/schema.astro";
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -20,6 +21,7 @@ const {
 <html lang="en">
   <head>
     <MetaTags title={title} description={description} />
+    <Schema />
     <ClientRouter />
   </head>
   <body class="text-white selection:bg-fuchsia-500 selection:text-white flex flex-col min-h-screen font-sans">
