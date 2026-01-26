@@ -26,6 +26,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
         run: npm run build
 
       - name: Debug Cloudflare Projects
