@@ -74,6 +74,36 @@ The project uses a custom set of Tailwind utilities for the glass effect:
 - `.glass-card-strong`: Heavy frosting for featured items.
 - `.fluid-bg`: Animated mesh gradients.
 
+## 🔎 SEO Architecture
+
+The project is fully optimized for search engines out of the box.
+
+### 1. Sitemap & Robots
+- **Automatic Generation**: The `sitemap-index.xml` is automatically generated at build time based on your routes.
+- **Configuration**: Regulated by `site: 'https://tmng.my.id'` in `astro.config.mjs`.
+- **Crawling**: `public/robots.txt` is configured to allow all bots and points explicitly to the sitemap.
+
+### 2. Structured Data (JSON-LD)
+We inject Schema.org data to help Google understand the brand identity:
+- **Component**: `src/components/seo/schema.astro`
+- **Organization Schema**: Links "TMNG" to your social profiles and logo.
+- **WebSite Schema**: Defines the site hierarchy and internal search potential.
+
+### 3. Meta Tags
+Every page uses the `MetaTags` component (`src/components/seo/meta-tags.astro`) to ensure:
+- Unique `title` and `description`.
+- Open Graph (Facebook/LinkedIn) previews.
+- Twitter Card large image summaries.
+
+### 4. Google Search Console Verification
+To verify ownership:
+1.  Go to [Google Search Console](https://search.google.com/search-console).
+2.  Add Property: `tmng.my.id`.
+3.  Add the **TXT Record** provided by Google to your Cloudflare DNS.
+    *   **Type**: TXT
+    *   **Name**: `@`
+    *   **Content**: `google-site-verification=...`
+
 ---
 
 © 2026 TMNG. Built for the future.
