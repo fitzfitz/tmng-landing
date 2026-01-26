@@ -12,8 +12,11 @@ export default function ContactForm() {
 
     const formData = new FormData(e.currentTarget);
     // Replace with your actual Access Key from web3forms.com
-    formData.append("access_key", import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY); 
+    formData.append("access_key", import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY);
     formData.append("botcheck", ""); // Honeypot to prevent spam
+
+    // DEBUG: Check what is actually being sent
+    console.log("Submitting Form Data:", Object.fromEntries(formData));
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -33,7 +36,7 @@ export default function ContactForm() {
       console.error("Form submission network error:", error);
       setStatus("error");
     }
-  };
+  };;
 
   if (status === "success") {
     return (
