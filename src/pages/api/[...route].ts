@@ -17,27 +17,40 @@ export const ALL: APIRoute = async ({ request, locals }) => {
       };
     };
   };
-  
+
   const runtimeEnv = (locals as RuntimeEnv).runtime?.env;
-  
+
+  // CRITICAL: Use runtimeEnv FIRST because import.meta.env is baked at build time!
   const env = {
-    DATABASE_URL: import.meta.env.DATABASE_URL ?? runtimeEnv?.DATABASE_URL ?? "",
-    MAIL_FROM: import.meta.env.MAIL_FROM ?? runtimeEnv?.MAIL_FROM ?? "noreply@tmng.my.id",
-    MAIL_TO: import.meta.env.MAIL_TO ?? runtimeEnv?.MAIL_TO ?? "themonograf@gmail.com",
-    SITE_URL: import.meta.env.SITE_URL ?? runtimeEnv?.SITE_URL ?? "https://tmng.my.id",
-    BETTER_AUTH_SECRET: import.meta.env.BETTER_AUTH_SECRET ?? runtimeEnv?.BETTER_AUTH_SECRET ?? "",
-    BETTER_AUTH_URL: import.meta.env.BETTER_AUTH_URL ?? runtimeEnv?.BETTER_AUTH_URL ?? "http://localhost:4321",
+    DATABASE_URL:
+      runtimeEnv?.DATABASE_URL ?? import.meta.env.DATABASE_URL ?? "",
+    MAIL_FROM:
+      runtimeEnv?.MAIL_FROM ??
+      import.meta.env.MAIL_FROM ??
+      "noreply@tmng.my.id",
+    MAIL_TO:
+      runtimeEnv?.MAIL_TO ?? import.meta.env.MAIL_TO ?? "themonograf@gmail.com",
+    SITE_URL:
+      runtimeEnv?.SITE_URL ?? import.meta.env.SITE_URL ?? "https://tmng.my.id",
+    BETTER_AUTH_SECRET:
+      runtimeEnv?.BETTER_AUTH_SECRET ??
+      import.meta.env.BETTER_AUTH_SECRET ??
+      "",
+    BETTER_AUTH_URL:
+      runtimeEnv?.BETTER_AUTH_URL ??
+      import.meta.env.BETTER_AUTH_URL ??
+      "http://localhost:4321",
   };
 
   // Rewrite the URL to remove /api prefix since Hono routes don't have it
   // BUT keep it for auth routes because Better Auth needs the full path
   const url = new URL(request.url);
   let newPath = url.pathname;
-  
+
   if (!url.pathname.startsWith("/api/auth")) {
     newPath = url.pathname.replace(/^\/api/, "");
   }
-  
+
   const newUrl = new URL(newPath, url.origin);
   newUrl.search = url.search;
 
@@ -50,7 +63,7 @@ export const ALL: APIRoute = async ({ request, locals }) => {
   });
 
   return app.fetch(newRequest, env);
-};
+};;
 
 // Also export specific methods for clarity
 export const GET = ALL;

@@ -13,22 +13,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Get environment variables
   // In Cloudflare Pages/Workers, these are available in locals.runtime.env
+  // CRITICAL: Use runtimeEnv FIRST because import.meta.env is baked at build time!
   const runtimeEnv = (context.locals as any).runtime?.env;
 
   const env = {
     DATABASE_URL:
-      import.meta.env.DATABASE_URL ??
       runtimeEnv?.DATABASE_URL ??
+      import.meta.env.DATABASE_URL ??
       process.env.DATABASE_URL ??
       "",
     BETTER_AUTH_SECRET:
-      import.meta.env.BETTER_AUTH_SECRET ??
       runtimeEnv?.BETTER_AUTH_SECRET ??
+      import.meta.env.BETTER_AUTH_SECRET ??
       process.env.BETTER_AUTH_SECRET ??
       "",
     BETTER_AUTH_URL:
-      import.meta.env.BETTER_AUTH_URL ??
       runtimeEnv?.BETTER_AUTH_URL ??
+      import.meta.env.BETTER_AUTH_URL ??
       process.env.BETTER_AUTH_URL ??
       "http://localhost:4321",
   };
