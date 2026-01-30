@@ -9,6 +9,7 @@ import cloudflare from '@astrojs/cloudflare';
 // https://astro.build/config
 export default defineConfig({
   site: "https://tmng.my.id",
+  output: "server", // Enable SSR for API routes
   vite: {
     plugins: [tailwindcss()],
   },

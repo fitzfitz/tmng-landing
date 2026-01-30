@@ -1,0 +1,27 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import AdminLayout from "@/features/admin/admin-layout";
+import PostsTable from "@/features/admin/posts-table";
+
+// Check session on the server side
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/admin/login");
+}
+---
+
+<BaseLayout title="My Posts | Admin Dashboard" showNav={false}>
+  <AdminLayout user={user} currentPath="/admin/posts" client:load>
+    <div class="space-y-6 p-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-white mb-2">My Posts</h1>
+          <p class="text-purple-200/50">Manage your blog content and drafts.</p>
+        </div>
+      </div>
+
+      {/* Posts Table Component */}
+      <PostsTable client:load />
+    </div>
+  </AdminLayout>
+</BaseLayout>

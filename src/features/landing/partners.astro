@@ -2,29 +2,30 @@
 import { Container, Typography } from "@/components/ui";
 
 const partners = [
-  { name: "Acme Corp", icon: "◈" },
-  { name: "Global Tech", icon: "▲" },
-  { name: "Nebula Systems", icon: "◉" },
-  { name: "Vertex Logic", icon: "⚡" },
-  { name: "Orbital AI", icon: "◎" },
-  { name: "Fusion Labs", icon: "★" },
-  { name: "Quantum Net", icon: "⬡" },
-  { name: "Cyber Dyne", icon: "⌘" },
+  { name: "Marketly", icon: "📊" },
+  { name: "Volume", icon: "🎵" },
+  { name: "PinPoint", icon: "📍" },
+  { name: "Natural", icon: "🌿" },
+  { name: "Automation", icon: "⚡" },
+  { name: "DataFlow", icon: "💫" }
 ];
 ---
 
-<section class="py-20 border-b border-white/10 relative overflow-hidden">
+<section class="partners-section py-20 purple-section relative overflow-hidden opacity-0">
   <Container>
     <div class="text-center mb-12">
-      <Typography variant="caption" className="text-purple-300 tracking-[0.2em]">Trusted by Industry Leaders</Typography>
+      <Typography variant="h2" className="text-white font-bold mb-3">Trusted by Industry Leaders</Typography>
+      <Typography variant="lead" className="text-purple-100 max-w-2xl mx-auto">
+        Proud to partner with innovative companies pushing boundaries
+      </Typography>
     </div>
     
     <div class="relative w-full overflow-hidden mask-linear-fade">
-        <div class="flex items-center gap-16 animate-marquee whitespace-nowrap">
+        <div class="flex items-center justify-center gap-12 lg:gap-16 animate-marquee whitespace-nowrap py-4">
             {[...partners, ...partners, ...partners].map((partner, i) => (
-                <div class="flex items-center gap-3 group opacity-40 hover:opacity-100 transition-opacity duration-300 cursor-default">
-                    <span class="text-3xl text-white">{partner.icon}</span>
-                    <span class="text-xl font-semibold text-purple-300 group-hover:text-white transition-colors">{partner.name}</span>
+                <div class="flex items-center gap-3 group transition-all duration-300 cursor-default px-4">
+                    <span class="text-4xl">{partner.icon}</span>
+                    <span class="text-xl font-semibold text-white/90 group-hover:text-white transition-colors">{partner.name}</span>
                 </div>
             ))}
         </div>
@@ -33,7 +34,7 @@ const partners = [
   
   <style>
     .mask-linear-fade {
-        mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     }
     
     @keyframes marquee {
@@ -50,3 +51,23 @@ const partners = [
     }
   </style>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo('.partners-section',
+    { opacity: 0 },
+    {
+      opacity: 1,
+      duration: 1.2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.partners-section',
+        start: 'top 75%',
+      }
+    }
+  );
+</script>

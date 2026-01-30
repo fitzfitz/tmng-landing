@@ -6,22 +6,39 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "npx tsx src/server/db/seed.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
     "@gsap/react": "^2.1.2",
+    "@hono/zod-validator": "^0.7.6",
     "@tailwindcss/vite": "^4.1.18",
-    "@types/react": "^19.2.9",
-    "@types/react-dom": "^19.2.3",
     "astro": "^5.16.15",
+    "better-auth": "^1.4.18",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.45.1",
     "gsap": "^3.14.2",
+    "hono": "^4.11.7",
+    "marked": "^17.0.1",
+    "postgres": "^3.4.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "drizzle-kit": "^0.31.8",
+    "tsx": "^4.21.0"
   }
 }

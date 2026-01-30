@@ -9,11 +9,13 @@ import { ClientRouter } from 'astro:transitions';
 interface Props {
   title: string;
   description?: string;
+  showNav?: boolean;
 }
 
 const { 
   title, 
-  description = "TMNG - Precision Digital Solutions" 
+  description = "TMNG - Precision Digital Solutions",
+  showNav = true
 } = Astro.props;
 ---
 
@@ -22,13 +24,13 @@ const {
   <head>
     <MetaTags title={title} description={description} />
     <Schema />
-    <ClientRouter />
+    <!-- <ClientRouter /> -->
   </head>
   <body class="text-white selection:bg-fuchsia-500 selection:text-white flex flex-col min-h-screen font-sans">
-    <Header />
-    <main class="grow pt-20" transition:animate="fade">
+    {showNav && <Header />}
+    <main class:list={["grow", { "pt-20": showNav }]} transition:animate="fade">
       <slot />
     </main>
-    <Footer />
+    {showNav && <Footer />}
   </body>
 </html>

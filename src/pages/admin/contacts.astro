@@ -1,0 +1,25 @@
+---
+import AdminLayout from "../../features/admin/admin-layout";
+import ContactsManager from "../../features/admin/contacts-manager";
+
+const user = Astro.locals.user;
+
+if (!user || user.role !== "admin") {
+  return Astro.redirect("/admin/posts");
+}
+---
+
+<AdminLayout user={user} currentPath="/admin/contacts" client:load>
+  <div class="space-y-6 p-6">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-purple-200">
+        Messages
+      </h1>
+      <p class="text-purple-200/70 mt-2">
+        View and manage inquiries from your contact form.
+      </p>
+    </div>
+
+    <ContactsManager client:load />
+  </div>
+</AdminLayout>

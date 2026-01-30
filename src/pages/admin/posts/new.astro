@@ -1,0 +1,27 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import AdminLayout from "@/features/admin/admin-layout";
+import PostEditor from "@/features/admin/post-editor";
+
+// Check session
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/admin/login");
+}
+---
+
+<BaseLayout title="Create Post | Admin Dashboard" showNav={false}>
+  <AdminLayout user={user} currentPath="/admin/posts" client:load>
+    <div class="p-6">
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-sm text-purple-200/50 mb-2">
+          <a href="/admin/posts" class="hover:text-fuchsia-400 transition-colors">Posts</a>
+          <span>/</span>
+          <span class="text-fuchsia-400">New Post</span>
+        </div>
+      </div>
+
+      <PostEditor isNew={true} client:only="react" />
+    </div>
+  </AdminLayout>
+</BaseLayout>

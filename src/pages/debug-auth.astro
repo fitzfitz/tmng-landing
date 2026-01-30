@@ -1,0 +1,82 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import { createAuth } from "@/server/auth";
+
+// Debug info
+const localsCheck = {
+  hasUser: !!Astro.locals.user,
+  hasSession: !!Astro.locals.session,
+  userData: Astro.locals.user,
+};
+
+const envCheck = {
+  DB_URL_Set: !!import.meta.env.DATABASE_URL,
+  AUTH_SECRET_Set: !!import.meta.env.BETTER_AUTH_SECRET,
+  AUTH_URL: import.meta.env.BETTER_AUTH_URL,
+  MODE: import.meta.env.MODE,
+  SSR: import.meta.env.SSR,
+};
+
+// Try manual session fetch (server-side)
+let manualSession = null;
+let error = null;
+
+try {
+  const auth = createAuth({
+    DATABASE_URL: import.meta.env.DATABASE_URL || process.env.DATABASE_URL || "",
+    BETTER_AUTH_SECRET: import.meta.env.BETTER_AUTH_SECRET || process.env.BETTER_AUTH_SECRET || "",
+    BETTER_AUTH_URL: import.meta.env.BETTER_AUTH_URL || "http://localhost:4321",
+  });
+  
+  manualSession = await auth.api.getSession({
+    headers: Astro.request.headers,
+  });
+} catch (e) {
+  error = e instanceof Error ? e.message : String(e);
+}
+
+const headers = Object.fromEntries(Astro.request.headers.entries());
+---
+
+<BaseLayout title="Debug Auth">
+  <div class="p-10 text-white space-y-8">
+    <h1 class="text-3xl font-bold">Auth Debugger</h1>
+    
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-purple-300">Middleware Locals</h2>
+        <pre class="bg-black/50 p-4 rounded text-sm overflow-auto">
+{JSON.stringify(localsCheck, null, 2)}
+        </pre>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-purple-300">Environment Vars</h2>
+        <pre class="bg-black/50 p-4 rounded text-sm overflow-auto">
+{JSON.stringify(envCheck, null, 2)}
+        </pre>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-purple-300">Manual Session Check</h2>
+        <pre class="bg-black/50 p-4 rounded text-sm overflow-auto">
+{JSON.stringify({ manualSession, error }, null, 2)}
+        </pre>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-purple-300">Request Headers</h2>
+        <div class="max-h-60 overflow-y-auto">
+            <pre class="bg-black/50 p-4 rounded text-xs overflow-auto">
+{JSON.stringify(headers, null, 2)}
+            </pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+        <a href="/admin/login" class="px-4 py-2 bg-purple-600 rounded">Go to Login</a>
+        <a href="/admin/posts" class="px-4 py-2 bg-blue-600 rounded">Go to Posts</a>
+    </div>
+  </div>
+</BaseLayout>
