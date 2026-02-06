@@ -1,0 +1,205 @@
+---
+import { Container, Button, Typography } from "@/components/ui";
+---
+
+<section class="relative pt-24 pb-16 md:pt-32 md:pb-24 bg-white overflow-hidden">
+  <!-- Animated Background Image -->
+  <div class="absolute inset-0 pointer-events-none">
+    <img 
+      src="/images/hero-bg.png" 
+      alt="Abstract Background" 
+      class="hero-bg-image w-full h-full object-cover opacity-60"
+    />
+    <div class="absolute inset-0 bg-linear-to-b from-white/40 via-transparent to-white/60"></div>
+  </div>
+
+  <Container className="relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Badge -->
+      <div 
+        class="hero-badge mb-8 inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-purple-50 border border-purple-100 text-purple-700 text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        <span>Award-Winning Design</span>
+        <div class="w-1 h-1 rounded-full bg-purple-300"></div>
+        <span>Enterprise Solutions</span>
+        <div class="w-1 h-1 rounded-full bg-purple-300"></div>
+        <span>Global Reach</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="hero-heading text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 leading-tight tracking-tight">
+        <span class="hero-text-line">Creating An</span><br />
+        <span class="hero-highlight bg-purple-600 text-white px-4 py-1.5 rounded-xl inline-block mt-2">
+          <span id="typed-word"></span>
+          <span class="typing-cursor -top-3 relative">|</span>
+        </span> 
+        <span class="hero-text-line">Digital</span><br />
+        <span class="hero-text-line">Solution</span>
+      </h1>
+      
+      <!-- Feature List -->
+      <ul class="max-w-2xl mx-auto space-y-3 mb-12">
+        <li class="hero-feature flex items-center justify-center gap-3 text-gray-700 text-lg">
+          <svg class="w-5 h-5 text-purple-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Design excellence that drives user engagement and business growth</span>
+        </li>
+        <li class="hero-feature flex items-center justify-center gap-3 text-gray-700 text-lg">
+          <svg class="w-5 h-5 text-purple-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Full-stack development with cutting-edge technologies and best practices</span>
+        </li>
+        <li class="hero-feature flex items-center justify-center gap-3 text-gray-700 text-lg">
+          <svg class="w-5 h-5 text-purple-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Strategic digital transformation that delivers measurable ROI</span>
+        </li>
+      </ul>
+      
+      <!-- CTA Buttons -->
+      <div class="hero-cta flex flex-col sm:flex-row gap-4 justify-center">
+        <Button as="a" href="/contact" variant="primary" size="lg">Get Started</Button>
+        <Button as="a" href="#services" variant="outline" size="lg">Our Services</Button>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .typing-cursor {
+    animation: blink 1s infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const words = ['Impactful', 'Beautiful', 'Innovative', 'Modern', 'Stunning', 'Professional'];
+  
+  const init = () => {
+    let currentWordIndex = 0;
+    const typedWordElement = document.getElementById('typed-word');
+
+    // Kill any existing GSAP tweens to prevent memory leaks or conflicts
+    gsap.killTweensOf('.hero-bg-image');
+    gsap.killTweensOf('.hero-badge');
+    gsap.killTweensOf('.hero-text-line');
+    gsap.killTweensOf('.hero-highlight');
+    gsap.killTweensOf('.hero-feature');
+    gsap.killTweensOf('.hero-cta');
+
+    function typeWord(word: string, onComplete: () => void) {
+      if (!typedWordElement) return;
+      
+      const letters = word.split('');
+      let currentText = '';
+      
+      letters.forEach((letter, index) => {
+        gsap.to({}, {
+          duration: 0.1,
+          delay: index * 0.08,
+          onComplete: () => {
+            currentText += letter;
+            if (typedWordElement) {
+              typedWordElement.textContent = currentText;
+            }
+            if (index === letters.length - 1) {
+              gsap.delayedCall(2, onComplete);
+            }
+          }
+        });
+      });
+    }
+
+    function deleteWord(onComplete: () => void) {
+      if (!typedWordElement) return;
+      
+      const currentText = typedWordElement?.textContent || '';
+      const letters = currentText.split('');
+      
+      letters.reverse().forEach((_, index) => {
+        gsap.to({}, {
+          duration: 0.05,
+          delay: index * 0.05,
+          onComplete: () => {
+            if (typedWordElement) {
+              typedWordElement.textContent = currentText.slice(0, -(index + 1));
+            }
+            if (index === letters.length - 1) {
+              gsap.delayedCall(0.3, onComplete);
+            }
+          }
+        });
+      });
+    }
+
+    function cycleWords() {
+      if (!document.contains(typedWordElement)) return; // Stop if element is gone
+      
+      typeWord(words[currentWordIndex], () => {
+        deleteWord(() => {
+          currentWordIndex = (currentWordIndex + 1) % words.length;
+          cycleWords();
+        });
+      });
+    }
+
+    // Animate hero background
+    gsap.to('.hero-bg-image', {
+      scale: 1.1,
+      rotation: 2,
+      duration: 20,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    // Hero entrance animation
+    const tl = gsap.timeline({ 
+      defaults: { ease: 'power3.out' },
+      onComplete: () => {
+        // Start typing animation after hero entrance completes
+        gsap.delayedCall(0.5, cycleWords);
+      }
+    });
+
+    tl.fromTo('.hero-badge', 
+      { y: -20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power2.out' }
+    )
+    .fromTo('.hero-text-line', 
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, stagger: 0.2 },
+      '-=0.6'
+    )
+    .fromTo('.hero-highlight',
+      { scale: 0.95, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.8, ease: 'power2.out' },
+      '-=0.8'
+    )
+    .fromTo('.hero-feature',
+      { x: -20, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, stagger: 0.12 },
+      '-=0.5'
+    )
+    .fromTo('.hero-cta',
+      { y: 15, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 },
+      '-=0.5'
+    );
+  };
+
+  document.addEventListener('astro:page-load', init);
+</script>

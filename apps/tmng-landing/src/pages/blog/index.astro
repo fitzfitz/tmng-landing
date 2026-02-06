@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import ClientLayout from "@/layouts/client-layout.astro";
+import { BlogIndexPage } from "@/features/blog/pages/blog-index-page";
+import "@/styles/global.css";
+---
+
+<ClientLayout title="Blog | TMNG" description="Insights on web development, design, and digital strategy.">
+  <BlogIndexPage client:only="react" />
+</ClientLayout>

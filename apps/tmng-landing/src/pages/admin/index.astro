@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import "@/styles/global.css";
+import { DashboardPage } from "@/features/admin/pages/dashboard-page";
+---
+
+<AdminLayout title="Dashboard">
+  <DashboardPage client:only="react" />
+</AdminLayout>

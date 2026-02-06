@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import { LoginPage } from "@/features/admin/pages/login-page";
+import ClientLayout from "@/layouts/client-layout.astro";
+import "@/styles/global.css";
+---
+
+<ClientLayout title="Admin Login" description="Admin Login" showNav={false}>
+  <LoginPage client:only="react" />
+</ClientLayout>

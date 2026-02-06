@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { CategoriesPage } from "@/features/admin/pages/categories-page";
+import "@/styles/global.css";
+---
+
+<AdminLayout title="Categories">
+  <CategoriesPage client:only="react" />
+</AdminLayout>

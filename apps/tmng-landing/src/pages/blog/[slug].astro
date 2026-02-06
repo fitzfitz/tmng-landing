@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+import ClientLayout from "@/layouts/client-layout.astro";
+import { BlogDetailPageWrapper } from "@/features/blog/pages/blog-detail-page";
+import "@/styles/global.css";
+
+const { slug } = Astro.params;
+---
+
+<ClientLayout title="Blog Post | TMNG" description="Read our latest insights.">
+  {slug && <BlogDetailPageWrapper client:only="react" slug={slug} />}
+</ClientLayout>

@@ -1,0 +1,31 @@
+---
+import AdminLayout from "@/features/admin/admin-layout";
+import { PortfolioForm } from "@/features/admin/portfolio/portfolio-form";
+import { api } from "@/utils/api-client";
+
+const { id } = Astro.params;
+
+// In a real generic Astro build, we might fetch here server-side, 
+// but since we are using client-side auth/api wrapper, 
+// we'll fetch inside the component or pass the ID to fetch there.
+// However, the Form expects `initialData`.
+// Let's modify logic: The Form handles fetching if `isNew` is false but no data is passed?
+// Or better: Let the client component fetch. 
+// My `PortfolioForm` currently takes `initialData`. 
+// I should update `PortfolioForm` to fetch if `id` is present, OR just wrap it here.
+// But `api` client might not work in Astro server environment easily if it depends on browser tokens.
+// So standard pattern is Client Component fetching.
+// Let's pass the ID to the form and let it fetch.
+
+// I need to update PortfolioForm to accept `id` and fetch if not new.
+// Wait, I didn't add fetch logic to PortfolioForm yet (unlike PostEditor).
+// I should update PortfolioForm.tsx to fetch if `id` is provided.
+---
+
+<AdminLayout title="Edit Project" client:load>
+  <PortfolioForm id={id} client:load />
+</AdminLayout>
+
+<script>
+  // Simple wrapper or just usage of parameters
+</script>

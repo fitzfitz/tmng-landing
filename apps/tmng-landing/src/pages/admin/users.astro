@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { UsersPage } from "@/features/admin/pages/users-page";
+import "@/styles/global.css";
+---
+
+<AdminLayout title="Users">
+  <UsersPage client:only="react" />
+</AdminLayout>

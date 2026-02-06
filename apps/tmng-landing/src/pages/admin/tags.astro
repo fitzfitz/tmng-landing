@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { TagsPage } from "@/features/admin/pages/tags-page";
+import "@/styles/global.css";
+---
+
+<AdminLayout title="Tags">
+  <TagsPage client:only="react" />
+</AdminLayout>

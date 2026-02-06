@@ -1,0 +1,8 @@
+---
+import AdminLayout from "@/features/admin/admin-layout";
+import { PortfolioForm } from "@/features/admin/portfolio/portfolio-form";
+---
+
+<AdminLayout title="New Project" client:load>
+  <PortfolioForm isNew={true} client:load />
+</AdminLayout>

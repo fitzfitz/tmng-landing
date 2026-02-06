@@ -1,0 +1,11 @@
+---
+// STATIC PRERENDER
+export const prerender = true;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { PendingPage } from "@/features/admin/pages/pending-page";
+import "@/styles/global.css";
+---
+
+<AdminLayout title="Pending">
+  <PendingPage client:only="react" />
+</AdminLayout>

@@ -1,0 +1,25 @@
+---
+import "@/styles/global.css";
+import MetaTags from "@/components/seo/meta-tags.astro";
+import { ClientRouter } from 'astro:transitions';
+
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Admin pages are NOT indexed -->
+    <MetaTags title={`${title} | TMNG Admin`} description="Admin Dashboard" noindex={true} />
+    <ClientRouter />
+  </head>
+  <body class="bg-muted/40 font-sans text-foreground selection:bg-primary selection:text-primary-foreground min-h-screen">
+    <!-- Wrap everything in QueryProvider for React Islands -->
+      <slot />
+  </body>
+</html>

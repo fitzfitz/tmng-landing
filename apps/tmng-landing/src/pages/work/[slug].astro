@@ -1,0 +1,143 @@
+---
+import Layout from "@/layouts/client-layout.astro";
+import { Container, Button } from "@/components/ui";
+import { marked } from "marked";
+import { format } from "date-fns";
+
+const { slug } = Astro.params;
+
+// Fetch data server-side
+const response = await fetch(`http://localhost:3000/api/portfolio/public/${slug}`);
+
+let project = null;
+if (response.ok) {
+  const json = await response.json();
+  project = json.data;
+} else {
+  return Astro.redirect("/404");
+}
+
+const content = marked.parse(project.content || "");
+---
+
+<Layout title={`${project.title} - TMNG Work`}>
+  <article>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 md:pt-48 md:pb-24 bg-gray-900 overflow-hidden">
+      {project.coverImage && (
+        <div class="absolute inset-0">
+          <img src={project.coverImage} alt="" class="w-full h-full object-cover opacity-30" />
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+        </div>
+      )}
+      
+      <Container className="relative z-10">
+        <div class="max-w-4xl">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium border border-purple-500/30">
+              {project.category}
+            </span>
+            {project.client && (
+              <span class="text-gray-400 text-sm border-l border-gray-700 pl-3">
+                Client: {project.client}
+              </span>
+            )}
+          </div>
+          
+          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            {project.title}
+          </h1>
+          
+          <p class="text-xl text-gray-300 max-w-2xl mb-8 leading-relaxed">
+            {project.summary}
+          </p>
+          
+          <div class="flex flex-wrap gap-4">
+            {project.liveUrl && (
+              <Button as="a" href={project.liveUrl} target="_blank" variant="primary" size="lg">
+                Visit Live Site
+              </Button>
+            )}
+            {project.repoUrl && (
+              <Button as="a" href={project.repoUrl} target="_blank" variant="outline" size="lg" className="border-gray-700 text-gray-300 hover:bg-gray-800">
+                View Code
+              </Button>
+            )}
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-16 md:py-24 bg-white">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Sidebar -->
+          <aside class="hidden lg:block lg:col-span-3 lg:col-start-1">
+             <div class="sticky top-24 space-y-8">
+               <div>
+                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Project Info</h3>
+                 <dl class="space-y-4 text-sm">
+                   {project.client && (
+                     <div>
+                       <dt class="text-gray-500">Client</dt>
+                       <dd class="font-medium text-gray-900">{project.client}</dd>
+                     </div>
+                   )}
+                   {project.completedAt && (
+                     <div>
+                       <dt class="text-gray-500">Date</dt>
+                       <dd class="font-medium text-gray-900">
+                         {format(new Date(project.completedAt), "MMMM yyyy")}
+                       </dd>
+                     </div>
+                   )}
+                   <div>
+                     <dt class="text-gray-500">Category</dt>
+                     <dd class="font-medium text-gray-900">{project.category}</dd>
+                   </div>
+                 </dl>
+               </div>
+               
+               {project.tags && project.tags.length > 0 && (
+                 <div>
+                   <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Tech Stack</h3>
+                   <div class="flex flex-wrap gap-2">
+                     {project.tags.map((tag: string) => (
+                       <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
+                         {tag}
+                       </span>
+                     ))}
+                   </div>
+                 </div>
+               )}
+             </div>
+          </aside>
+
+          <!-- Main Content -->
+          <div class="lg:col-span-8 lg:col-start-5">
+            <div class="prose prose-lg prose-purple max-w-none text-gray-600">
+              <Fragment set:html={content} />
+            </div>
+            
+            {/* Gallery */}
+            {project.gallery && project.gallery.length > 0 && (
+              <div class="mt-16 pt-16 border-t border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">Project Gallery</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {project.gallery.map((img: string) => (
+                    <img 
+                      src={img} 
+                      alt="" 
+                      class="rounded-xl shadow-sm border border-gray-100 w-full h-auto hover:shadow-md transition-shadow"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </Container>
+    </section>
+  </article>
+</Layout>

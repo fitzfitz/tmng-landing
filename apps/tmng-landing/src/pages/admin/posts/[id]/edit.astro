@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { PostEditorPage } from "@/features/admin/pages/post-editor-page";
+import "@/styles/global.css";
+
+const { id } = Astro.params;
+---
+
+<AdminLayout title="Edit Post">
+  <PostEditorPage client:only="react" id={id} />
+</AdminLayout>
