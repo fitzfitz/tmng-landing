@@ -45,16 +45,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/tmng-landing-api
           command: deploy
-          secrets: |
-            DATABASE_URL
-            JWT_SECRET
-            NODE_ENV
-            ALLOWED_ORIGIN
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          NODE_ENV: "production"
-          ALLOWED_ORIGIN: ${{ secrets.ALLOWED_ORIGIN }}
 
       # Frontend Build
       - name: Build Frontend
