@@ -49,6 +49,8 @@ jobs:
       # Frontend Build
       - name: Build Frontend
         run: pnpm --filter @tmng/landing build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       # Frontend Deploy (Pages)
       - name: Deploy Frontend
