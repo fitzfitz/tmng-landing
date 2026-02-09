@@ -58,4 +58,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/tmng-landing/dist --project-name=tmng-landing
+          workingDirectory: apps/tmng-landing
+          command: pages deploy dist --project-name=tmng-landing
