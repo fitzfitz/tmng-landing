@@ -47,22 +47,10 @@ jobs:
           command: deploy
 
       # Frontend Build
-      - name: Debug Environment
-        run: |
-          if [ -z "${{ secrets.VITE_API_URL || vars.VITE_API_URL }}" ]; then
-            echo "::error::VITE_API_URL is missing or empty!"
-            exit 1
-          else
-            echo "VITE_API_URL is set (length: ${#VITE_API_URL})"
-          fi
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL || vars.VITE_API_URL }}
-
       - name: Build Frontend
-      
         run: pnpm --filter @tmng/landing build
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL || vars.VITE_API_URL }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       # Frontend Deploy (Pages)
       - name: Deploy Frontend
