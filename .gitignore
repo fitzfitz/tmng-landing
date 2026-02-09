@@ -26,6 +26,7 @@ lerna-debug.log*
 .env.development
 .env.local
 .env.*.local
+dev.vars
 
 # Editor/IDE
 .vscode/*

@@ -1,13 +1,14 @@
-import { z } from 'zod';
+// Simple direct env access for Wrangler
+// Wrangler loads dev.vars into the runtime environment
 
-console.log('Raw Env Keys:', Object.keys(process.env));
+export const env = {
+  DATABASE_URL: process.env.DATABASE_URL || "",
+  JWT_SECRET: process.env.JWT_SECRET || "d565da37485c38dff303b6b30930998d",
+  NODE_ENV: (process.env.NODE_ENV || "development") as
+    | "development"
+    | "production"
+    | "test",
+  ALLOWED_ORIGIN: process.env.ALLOWED_ORIGIN || "http://localhost:5173",
+};
 
-const envSchema = z.object({
-  // Hardcoding fallback for now as Wrangler process.env is empty in this setup
-  DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32).default('supersecretjwtsigningkeyfornow123'),
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  ALLOWED_ORIGIN: z.string().default('http://localhost:4321,https://tmng.my.id'),
-});
-
-export const env = envSchema.parse(process.env);
+export type Env = typeof env;

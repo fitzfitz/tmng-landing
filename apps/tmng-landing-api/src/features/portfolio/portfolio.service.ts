@@ -1,13 +1,10 @@
 import { eq, desc, and } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
 import { portfolioItems } from "@tmng/shared";
-import { env } from "../../utils/env";
-import type { CreatePortfolioInput, UpdatePortfolioInput } from "./portfolio.schema";
-
-// Create a client for the service
-const client = postgres(env.DATABASE_URL!);
-const db = drizzle(client);
+import { db } from "../../lib/db";
+import type {
+  CreatePortfolioInput,
+  UpdatePortfolioInput,
+} from "./portfolio.schema";
 
 export class PortfolioService {
   static async listPublic() {
@@ -22,7 +19,12 @@ export class PortfolioService {
     const [item] = await db
       .select()
       .from(portfolioItems)
-      .where(and(eq(portfolioItems.slug, slug), eq(portfolioItems.status, "published")))
+      .where(
+        and(
+          eq(portfolioItems.slug, slug),
+          eq(portfolioItems.status, "published"),
+        ),
+      )
       .limit(1);
     return item || null;
   }

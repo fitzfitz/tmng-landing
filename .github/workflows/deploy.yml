@@ -9,6 +9,8 @@ on:
 
 # Cancel in-progress runs on new pushes
 concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -17,32 +19,49 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "pnpm"
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install
 
       # Shared Package Build
       - name: Build Shared
-        run: npm run build --workspace=@tmng/shared
+        run: pnpm --filter @tmng/shared build
 
-      # API Deploy
-      - name: Deploy API (Worker)
+      # API Deploy (Worker)
+      - name: Deploy API
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/tmng-landing-api
           command: deploy
+          secrets: |
+            DATABASE_URL
+            JWT_SECRET
+            NODE_ENV
+            ALLOWED_ORIGIN
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: "production"
+          ALLOWED_ORIGIN: ${{ secrets.ALLOWED_ORIGIN }}
 
-      # Frontend Deploy
+      # Frontend Build
       - name: Build Frontend
-        run: npm run build --workspace=@tmng/landing
+        run: pnpm --filter @tmng/landing build
 
-      - name: Deploy Frontend (Pages)
+      # Frontend Deploy (Pages)
+      - name: Deploy Frontend
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -1,8 +1,16 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export type User = {
   id: string;
   role: string;
+};
+
+// Cloudflare bindings from dev.vars
+export type Bindings = {
+  DATABASE_URL: string;
+  JWT_SECRET: string;
+  NODE_ENV: "development" | "production" | "test";
+  ALLOWED_ORIGIN: string;
 };
 
 export type Variables = {

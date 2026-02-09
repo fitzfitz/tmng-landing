@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "build": "tsc",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:push": "drizzle-kit push",
@@ -12,19 +13,22 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.19.9",
-    "@hono/zod-validator": "^0.2.2",
+    "@hono/zod-validator": "^0.7.6",
     "@tmng/shared": "workspace:*",
     "@types/bcryptjs": "^3.0.0",
     "bcryptjs": "^3.0.3",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
-    "hono": "^4.6.14",
-    "postgres": "^3.4.3",
-    "zod": "^3.23.8"
+    "hono": "^4.11.9",
+    "postgres": "^3.4.8",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260207.0",
+    "@types/node": "^25.2.2",
     "drizzle-kit": "^0.31.8",
     "tsx": "^4.21.0",
-    "wrangler": "^4.4.0"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.63.0"
   }
 }

@@ -1,33 +1,46 @@
-export type Author = {
-  name: string;
-  role?: string;
-  avatar?: string;
-  bio?: string;
-  socialLinks?: {
-    twitter?: string;
-    linkedin?: string;
-    github?: string;
-    website?: string;
-  };
-};
-
-export type Category = {
-  name: string;
-  slug: string;
-  color?: string;
-};
-
-export type Post = {
-  slug: string;
+// API types for blog posts
+export interface Post {
+  id: string;
   title: string;
+  slug: string;
   excerpt: string;
+  content: string;
   coverImage?: string;
+  author: {
+    name: string;
+    avatar?: string;
+  };
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  tags: Array<{
+    id: string;
+    name: string;
+    slug: string;
+  }>;
   publishedAt: string;
-  readTimeMinutes?: number;
-  categories?: Category[];
-  author?: Author;
-  content?: string;
-  contentHtml?: string;
-  viewCount?: number;
-  relatedPosts?: Post[]; 
-};
+  updatedAt: string;
+  readingTime?: number;
+  views?: number;
+}
+
+export interface PostsListParams {
+  page?: number;
+  limit?: number;
+  category?: string;
+  tag?: string;
+  search?: string;
+}
+
+export interface PostsListResponse {
+  success: boolean;
+  data: Post[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}

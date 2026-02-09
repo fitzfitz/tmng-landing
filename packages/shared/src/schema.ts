@@ -1,46 +1,72 @@
-
-import { pgTable, text, timestamp, uuid, boolean, integer, varchar, jsonb, primaryKey, unique, index, foreignKey } from "drizzle-orm/pg-core";
-import { relations, sql } from "drizzle-orm";
+import {
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  boolean,
+  integer,
+  varchar,
+  jsonb,
+  primaryKey,
+  unique,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 // === Auth & Users ===
-export const users = pgTable("users", {
-  id: text("id").primaryKey().notNull(), // Text ID from DB
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  role: text("role").notNull(),
-  bio: text("bio"),
-  password: text("password"),
-  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
-}, (table) => [
-  unique("users_email_key").on(table.email),
-]);
+export const users = pgTable(
+  "users",
+  {
+    id: text("id").primaryKey().notNull(), // Text ID from DB
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
+    image: text("image"),
+    role: text("role").notNull(),
+    bio: text("bio"),
+    password: text("password"),
+    createdAt: timestamp("created_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [unique("users_email_key").on(table.email)],
+);
 
-export const sessions = pgTable("sessions", {
-  id: text("id").primaryKey().notNull(),
-  userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  token: text("token").notNull(),
-  expiresAt: timestamp("expires_at", { mode: "string" }).notNull(),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  createdAt: timestamp("created_at", { mode: "string" }).notNull(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).notNull(),
-}, (table) => [
-  unique("sessions_token_key").on(table.token),
-]);
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: text("id").primaryKey().notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    token: text("token").notNull(),
+    expiresAt: timestamp("expires_at", { mode: "string" }).notNull(),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { mode: "string" }).notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).notNull(),
+  },
+  (table) => [unique("sessions_token_key").on(table.token)],
+);
 
 export const accounts = pgTable("accounts", {
   id: text("id").primaryKey().notNull(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
-  userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
-  accessTokenExpiresAt: timestamp("access_token_expires_at", { mode: "string" }),
-  refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { mode: "string" }),
+  accessTokenExpiresAt: timestamp("access_token_expires_at", {
+    mode: "string",
+  }),
+  refreshTokenExpiresAt: timestamp("refresh_token_expires_at", {
+    mode: "string",
+  }),
   scope: text("scope"),
   password: text("password"),
   createdAt: timestamp("created_at", { mode: "string" }).notNull(),
@@ -89,31 +115,50 @@ export const posts = pgTable("posts", {
   seoTitle: varchar("seo_title", { length: 70 }),
   seoDescription: varchar("seo_description", { length: 160 }),
   seoImage: text("seo_image"),
+  views: integer("views").default(0),
   publishedAt: timestamp("published_at", { mode: "string" }),
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
 });
 
 // Join Table for Posts <-> Categories
-export const postCategories = pgTable("post_categories", {
-  postId: uuid("post_id").notNull().references(() => posts.id, { onDelete: "cascade" }),
-  categoryId: uuid("category_id").notNull().references(() => categories.id, { onDelete: "cascade" }),
-}, (t) => ({
-  pk: primaryKey({ columns: [t.postId, t.categoryId] }),
-}));
+export const postCategories = pgTable(
+  "post_categories",
+  {
+    postId: uuid("post_id")
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),
+    categoryId: uuid("category_id")
+      .notNull()
+      .references(() => categories.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.postId, t.categoryId] }),
+  }),
+);
 
 // Join Table for Posts <-> Tags
 // Using alias 'postsTags' to match legacy code usage
-export const postsTags = pgTable("post_tags", {
-  postId: uuid("post_id").notNull().references(() => posts.id, { onDelete: "cascade" }),
-  tagId: uuid("tag_id").notNull().references(() => tags.id, { onDelete: "cascade" }),
-}, (t) => ({
-  pk: primaryKey({ columns: [t.tagId, t.postId] }),
-}));
+export const postsTags = pgTable(
+  "post_tags",
+  {
+    postId: uuid("post_id")
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),
+    tagId: uuid("tag_id")
+      .notNull()
+      .references(() => tags.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.tagId, t.postId] }),
+  }),
+);
 
 export const postViews = pgTable("post_views", {
   id: uuid("id").primaryKey().defaultRandom(),
-  postId: uuid("post_id").notNull().references(() => posts.id, { onDelete: "cascade" }),
+  postId: uuid("post_id")
+    .notNull()
+    .references(() => posts.id, { onDelete: "cascade" }),
   ipHash: varchar("ip_hash", { length: 64 }),
   userAgent: text("user_agent"),
   referrer: text("referrer"),
@@ -141,7 +186,6 @@ export const portfolioItems = pgTable("portfolio_items", {
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
 });
-
 
 // === Engagement ===
 
@@ -172,13 +216,19 @@ export const subscribers = pgTable("subscribers", {
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
 });
 
-export const subscriberPreferences = pgTable("subscriber_preferences", {
-  subscriberId: uuid("subscriber_id").notNull().references(() => subscribers.id, { onDelete: "cascade" }),
-  preferenceKey: varchar("preference_key", { length: 50 }).notNull(),
-  enabled: boolean("enabled").default(true).notNull(),
-}, (t) => ({
-  pk: primaryKey({ columns: [t.subscriberId, t.preferenceKey] }),
-}));
+export const subscriberPreferences = pgTable(
+  "subscriber_preferences",
+  {
+    subscriberId: uuid("subscriber_id")
+      .notNull()
+      .references(() => subscribers.id, { onDelete: "cascade" }),
+    preferenceKey: varchar("preference_key", { length: 50 }).notNull(),
+    enabled: boolean("enabled").default(true).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.subscriberId, t.preferenceKey] }),
+  }),
+);
 
 // === Relations ===
 
@@ -228,4 +278,4 @@ export const postsTagsRelations = relations(postsTags, ({ one }) => ({
 }));
 
 // Export 'contacts' alias for backward compatibility
-export const contacts = contactSubmissions; 
+export const contacts = contactSubmissions;

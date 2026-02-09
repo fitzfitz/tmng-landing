@@ -1,21 +1,52 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import { users, posts, contactSubmissions, subscribers } from '@tmng/shared/src/schema';
-import { env } from '../utils/env';
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import {
+  users,
+  posts,
+  contactSubmissions,
+  subscribers,
+  categories,
+  tags,
+  postCategories,
+  postsTags,
+} from "@tmng/shared/src/schema";
+import type { Bindings } from "../types";
+import { env } from "../utils/env";
 
-// Connection client
-const client = postgres(env.DATABASE_URL!, { 
-  prepare: false,
-  ssl: { rejectUnauthorized: false },
-  max: 1, // Limit to 1 connection for serverless/worker environment to prevent hangs
-  idle_timeout: 20, // Close idle connections quickly
-  connect_timeout: 10, // Fail fast if connection hangs
-});
+// Factory function to create DB with runtime environment
+export function createDb(env: Bindings) {
+  const client = postgres(env.DATABASE_URL, {
+    prepare: false,
+    // Removed SSL and timeout configs that were causing hangs
+  });
 
-// Create drizzle instance
-export const db = drizzle(client);
+  return drizzle(client, {
+    schema: {
+      users,
+      posts,
+      contactSubmissions,
+      subscribers,
+      categories,
+      tags,
+      postCategories,
+      postsTags,
+    },
+  });
+}
 
-// Export tables for use in queries (using alias contacts for contactSubmissions)
-export { users, posts, subscribers };
+// Export tables for use in queries
+export {
+  users,
+  posts,
+  contactSubmissions,
+  subscribers,
+  categories,
+  tags,
+  postCategories,
+  postsTags,
+};
+// Singleton DB instance
+export const db = createDb({ ...env, DATABASE_URL: env.DATABASE_URL });
+
+// Alias for backward compatibility
 export { contactSubmissions as contacts };
-export { categories, tags, postCategories, postsTags } from '@tmng/shared/src/schema';

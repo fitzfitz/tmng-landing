@@ -1,27 +1,44 @@
-import { eq, desc, asc, and, or, sql, like, inArray, count } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import { env } from '../../utils/env';
-import { db, users, categories, tags, postCategories, postsTags as postTags } from '../../lib/db';
-import { posts, subscribers } from '../../lib/db';
-import type { CreatePostInput, UpdatePostInput, ListPostsQuery } from './posts.schema';
+import { eq, desc, asc, and, or, sql, like, inArray, count } from "drizzle-orm";
+
+import {
+  db,
+  users,
+  categories,
+  tags,
+  postCategories,
+  postsTags as postTags,
+  posts,
+} from "../../lib/db";
+import type { Bindings } from "../../types";
+import type {
+  CreatePostInput,
+  UpdatePostInput,
+  ListPostsQuery,
+} from "./posts.schema";
 
 export const postsService = {
   // List posts with pagination and filters
-  async listPosts(query: ListPostsQuery, isAdmin = false) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
-    const { page, limit, status, isFeatured, authorId, categoryId, tagId, search, sortBy, sortOrder } = query;
+  async listPosts(env: Bindings, query: ListPostsQuery, isAdmin = false) {
+    const {
+      page,
+      limit,
+      status,
+      isFeatured,
+      authorId,
+      categoryId,
+      tagId,
+      search,
+      sortBy,
+      sortOrder,
+    } = query;
     const offset = (page - 1) * limit;
 
     // Build WHERE conditions
     const conditions = [];
-    
+
     // Public endpoints only see published posts
     if (!isAdmin) {
-      conditions.push(eq(posts.status, 'published'));
+      conditions.push(eq(posts.status, "published"));
     } else if (status) {
       conditions.push(eq(posts.status, status));
     }
@@ -38,8 +55,8 @@ export const postsService = {
       conditions.push(
         or(
           like(posts.title, `%${search}%`),
-          like(posts.excerpt, `%${search}%`)
-        )
+          like(posts.excerpt, `%${search}%`),
+        ),
       );
     }
 
@@ -50,7 +67,7 @@ export const postsService = {
         .select({ postId: postCategories.postId })
         .from(postCategories)
         .where(eq(postCategories.categoryId, categoryId));
-      postIdsFromCategory = postsInCategory.map(p => p.postId);
+      postIdsFromCategory = postsInCategory.map((p) => p.postId);
       if (postIdsFromCategory.length > 0) {
         conditions.push(inArray(posts.id, postIdsFromCategory));
       } else {
@@ -66,7 +83,7 @@ export const postsService = {
         .select({ postId: postTags.postId })
         .from(postTags)
         .where(eq(postTags.tagId, tagId));
-      postIdsFromTag = postsWithTag.map(p => p.postId);
+      postIdsFromTag = postsWithTag.map((p) => p.postId);
       if (postIdsFromTag.length > 0) {
         conditions.push(inArray(posts.id, postIdsFromTag));
       } else {
@@ -85,21 +102,21 @@ export const postsService = {
       updatedAt: posts.updatedAt,
     }[sortBy];
 
-    const orderFn = sortOrder === 'asc' ? asc : desc;
+    const orderFn = sortOrder === "asc" ? asc : desc;
 
     // Build the WHERE clause
-    const finalWhereClause = conditions.length > 0 ? and(...conditions) : undefined;
+    const finalWhereClause =
+      conditions.length > 0 ? and(...conditions) : undefined;
 
     // Get total count using Drizzle's count() helper
     try {
       const countQuery = db.select({ value: count() }).from(posts);
-      const countResult = finalWhereClause 
+      const countResult = finalWhereClause
         ? await countQuery.where(finalWhereClause)
         : await countQuery;
-      
+
       const totalCount = Number(countResult[0]?.value ?? 0);
 
-    
       const baseQuery = db
         .select({
           id: posts.id,
@@ -127,10 +144,17 @@ export const postsService = {
         })
         .from(posts)
         .leftJoin(users, eq(posts.authorId, users.id));
-      
+
       const results = finalWhereClause
-        ? await baseQuery.where(finalWhereClause).orderBy(orderFn(sortColumn)).limit(limit).offset(offset)
-        : await baseQuery.orderBy(orderFn(sortColumn)).limit(limit).offset(offset);
+        ? await baseQuery
+            .where(finalWhereClause)
+            .orderBy(orderFn(sortColumn))
+            .limit(limit)
+            .offset(offset)
+        : await baseQuery
+            .orderBy(orderFn(sortColumn))
+            .limit(limit)
+            .offset(offset);
 
       return {
         posts: results,
@@ -140,7 +164,7 @@ export const postsService = {
         totalPages: Math.ceil(totalCount / limit),
       };
     } catch (error) {
-      console.error('Error in listPosts service:', error);
+      console.error("Error in listPosts service:", error);
       // Return empty result on error rather than crashing
       return {
         posts: [],
@@ -154,14 +178,10 @@ export const postsService = {
 
   // Get single post by ID
   async getPostById(id: string, isAdmin = false) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const conditions = [eq(posts.id, id)];
-    
+
     if (!isAdmin) {
-      conditions.push(eq(posts.status, 'published'));
+      conditions.push(eq(posts.status, "published"));
     }
 
     const [post] = await db
@@ -226,15 +246,11 @@ export const postsService = {
   },
 
   // Get single post by slug
-  async getPostBySlug(slug: string, isAdmin = false) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
+  async getPostBySlug(env: Bindings, slug: string, isAdmin = false) {
     const conditions = [eq(posts.slug, slug)];
-    
+
     if (!isAdmin) {
-      conditions.push(eq(posts.status, 'published'));
+      conditions.push(eq(posts.status, "published"));
     }
 
     const [post] = await db
@@ -298,12 +314,44 @@ export const postsService = {
     };
   },
 
+  // Increment post views
+  async incrementPostViews(
+    env: Bindings,
+    slug: string,
+    location?: {
+      country: string | null;
+      city: string | null;
+      timezone: string | null;
+      region: string | null;
+      latitude: string | null;
+      longitude: string | null;
+    },
+  ) {
+    // Use update with returning - works better with postgres-js than execute
+    const result = await db
+      .update(posts)
+      .set({ views: sql`COALESCE(${posts.views}, 0) + 1` })
+      .where(eq(posts.slug, slug))
+      .returning({ id: posts.id, views: posts.views });
+
+    if (!result || result.length === 0) {
+      return null;
+    }
+
+    const newViews = result[0].views || 0;
+
+    // Log location data for analytics (can be stored in separate table later)
+    if (location && location.country) {
+      console.log(
+        `Post view from ${location.city || "Unknown"}, ${location.country} (timezone: ${location.timezone})`,
+      );
+    }
+
+    return { views: newViews, location };
+  },
+
   // Create new post
   async createPost(data: CreatePostInput, authorId: string) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const { categoryIds, tagIds, ...postData } = data;
 
     // Insert post
@@ -312,27 +360,28 @@ export const postsService = {
       .values({
         ...postData,
         authorId,
-        publishedAt: data.status === 'published' ? new Date().toISOString() : null,
+        publishedAt:
+          data.status === "published" ? new Date().toISOString() : null,
       })
       .returning();
 
     // Insert categories
     if (categoryIds && categoryIds.length > 0) {
       await db.insert(postCategories).values(
-        categoryIds.map(categoryId => ({
+        categoryIds.map((categoryId) => ({
           postId: newPost.id,
           categoryId,
-        }))
+        })),
       );
     }
 
     // Insert tags
     if (tagIds && tagIds.length > 0) {
       await db.insert(postTags).values(
-        tagIds.map(tagId => ({
+        tagIds.map((tagId) => ({
           postId: newPost.id,
           tagId,
-        }))
+        })),
       );
     }
 
@@ -341,10 +390,6 @@ export const postsService = {
 
   // Update post
   async updatePost(id: string, data: UpdatePostInput) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const { categoryIds, tagIds, ...postData } = data;
 
     // Update post
@@ -353,7 +398,9 @@ export const postsService = {
       .set({
         ...postData,
         updatedAt: new Date().toISOString(),
-        ...(data.status === 'published' && { publishedAt: new Date().toISOString() }),
+        ...(data.status === "published" && {
+          publishedAt: new Date().toISOString(),
+        }),
       })
       .where(eq(posts.id, id))
       .returning();
@@ -365,10 +412,10 @@ export const postsService = {
       await db.delete(postCategories).where(eq(postCategories.postId, id));
       if (categoryIds.length > 0) {
         await db.insert(postCategories).values(
-          categoryIds.map(categoryId => ({
+          categoryIds.map((categoryId) => ({
             postId: id,
             categoryId,
-          }))
+          })),
         );
       }
     }
@@ -378,10 +425,10 @@ export const postsService = {
       await db.delete(postTags).where(eq(postTags.postId, id));
       if (tagIds.length > 0) {
         await db.insert(postTags).values(
-          tagIds.map(tagId => ({
+          tagIds.map((tagId) => ({
             postId: id,
             tagId,
-          }))
+          })),
         );
       }
     }
@@ -391,10 +438,6 @@ export const postsService = {
 
   // Delete post
   async deletePost(id: string) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const [deletedPost] = await db
       .delete(posts)
       .where(eq(posts.id, id))
@@ -405,14 +448,10 @@ export const postsService = {
 
   // Publish post
   async publishPost(id: string) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const [publishedPost] = await db
       .update(posts)
       .set({
-        status: 'published',
+        status: "published",
         publishedAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       })
@@ -424,14 +463,10 @@ export const postsService = {
 
   // Unpublish post
   async unpublishPost(id: string) {
-    // Create a local client to avoid "Cannot perform I/O on behalf of a different request" error
-    const client = postgres(env.DATABASE_URL!, { prepare: false });
-    const db = drizzle(client);
-
     const [unpublishedPost] = await db
       .update(posts)
       .set({
-        status: 'draft',
+        status: "draft",
         updatedAt: new Date().toISOString(),
       })
       .where(eq(posts.id, id))
