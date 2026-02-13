@@ -1,6 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 import { Markdown } from "tiptap-markdown";
 import {
   Bold,
@@ -18,8 +19,10 @@ import {
   Terminal,
   Link as LinkIcon,
   Unlink,
+  Check,
+  X,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TiptapEditorProps {
   content: string;
@@ -28,28 +31,77 @@ interface TiptapEditorProps {
 }
 
 const MenuBar = ({ editor }: { editor: any }) => {
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+
   if (!editor) {
     return null;
   }
 
-  const setLink = () => {
+  const openLinkInput = () => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
-
-    if (url === null) {
-      return;
-    }
-
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    setLinkUrl(previousUrl || "");
+    setShowLinkInput(true);
   };
 
+  const closeLinkInput = () => {
+    setShowLinkInput(false);
+    setLinkUrl("");
+  };
+
+  const saveLink = () => {
+    if (linkUrl === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+    } else {
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({ href: linkUrl })
+        .run();
+    }
+    closeLinkInput();
+  };
+
+  if (showLinkInput) {
+    return (
+      <div className="flex items-center gap-2 border-b border-white/10 p-2 bg-white/5 h-[53px]">
+        <input
+          type="url"
+          value={linkUrl}
+          onChange={(e) => setLinkUrl(e.target.value)}
+          placeholder="Enter URL..."
+          className="flex-1 bg-black/20 border border-white/10 rounded px-3 py-1 text-sm text-white focus:outline-none focus:border-fuchsia-500/50"
+          autoFocus
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              saveLink();
+            } else if (e.key === "Escape") {
+              closeLinkInput();
+            }
+          }}
+        />
+        <button
+          type="button"
+          onClick={saveLink}
+          className="p-1 rounded hover:bg-white/10 text-green-400 transition-colors"
+        >
+          <Check size={18} />
+        </button>
+        <button
+          type="button"
+          onClick={closeLinkInput}
+          className="p-1 rounded hover:bg-white/10 text-red-400 transition-colors"
+        >
+          <X size={18} />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-white/10 p-2 bg-white/5">
+    <div className="flex flex-wrap items-center gap-1 border-b border-white/10 p-2 bg-white/5 min-h-[53px]">
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -57,7 +109,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         className={`p-2 rounded hover:bg-white/10 text-purple-200 transition-colors ${
           editor.isActive("bold") ? "bg-fuchsia-600/20 text-fuchsia-400" : ""
         }`}
-        title="Bold"
+        title="Bold (Cmd+B)"
       >
         <Bold size={16} />
       </button>
@@ -68,7 +120,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         className={`p-2 rounded hover:bg-white/10 text-purple-200 transition-colors ${
           editor.isActive("italic") ? "bg-fuchsia-600/20 text-fuchsia-400" : ""
         }`}
-        title="Italic"
+        title="Italic (Cmd+I)"
       >
         <Italic size={16} />
       </button>
@@ -79,7 +131,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         className={`p-2 rounded hover:bg-white/10 text-purple-200 transition-colors ${
           editor.isActive("strike") ? "bg-fuchsia-600/20 text-fuchsia-400" : ""
         }`}
-        title="Strike"
+        title="Strike (Cmd+Shift+X)"
       >
         <Strikethrough size={16} />
       </button>
@@ -90,7 +142,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         className={`p-2 rounded hover:bg-white/10 text-purple-200 transition-colors ${
           editor.isActive("code") ? "bg-fuchsia-600/20 text-fuchsia-400" : ""
         }`}
-        title="Code"
+        title="Code (Cmd+E)"
       >
         <Code size={16} />
       </button>
@@ -165,7 +217,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
       <button
         type="button"
-        onClick={setLink}
+        onClick={openLinkInput}
         className={`p-2 rounded hover:bg-white/10 text-purple-200 transition-colors ${
           editor.isActive("link") ? "bg-fuchsia-600/20 text-fuchsia-400" : ""
         }`}
@@ -239,6 +291,11 @@ export function TiptapEditor({
   onChange,
   editable = true,
 }: TiptapEditorProps) {
+  // Use a ref to track the last content we emitted to the parent.
+  // This helps us distinguish between external updates (which we should sync)
+  // and internal updates (which we have already applied).
+  const lastOnChange = useRef(content);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -249,37 +306,40 @@ export function TiptapEditor({
         },
       }),
       Markdown,
+      Placeholder.configure({
+        placeholder: "Write your post content in Markdown...",
+        emptyEditorClass: "is-editor-empty",
+      }),
     ],
     content,
     editable,
     onUpdate: ({ editor }) => {
       const storage = editor.storage as any;
-      onChange(storage.markdown.getMarkdown());
+      const newContent = storage.markdown.getMarkdown();
+
+      // Only emit if content actually changed
+      if (newContent !== lastOnChange.current) {
+        lastOnChange.current = newContent;
+        onChange(newContent);
+      }
     },
     editorProps: {
       attributes: {
         class:
-          "prose prose-invert prose-purple max-w-none p-6 focus:outline-none min-h-[300px]",
+          "prose prose-invert prose-purple max-w-none p-6 focus:outline-none min-h-[300px] [&_.is-editor-empty:first-child::before]:text-purple-200/30 [&_.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_.is-editor-empty:first-child::before]:float-left [&_.is-editor-empty:first-child::before]:h-0 [&_.is-editor-empty:first-child::before]:pointer-events-none",
       },
     },
   });
 
-  // Sync content if it changes externally (e.g. initial load)
+  // Sync content if it changes externally
   useEffect(() => {
-    const storage = editor?.storage as any;
-    if (editor && content !== storage.markdown.getMarkdown()) {
-      // Only set content if it's different to avoid cursor jumping or loops
-      // Simple check, might need better diffing if bidirectional binding is heavy
-      // But for initial load it's fine.
-      // Actually checking against getMarkdown() might be tricky due to formatting diffs.
-      // Ideally we only set content once on mount or when id changes.
-      // But react-hook-form 'watch' value might change.
-      // Let's rely on initial content and only update if editor is empty?
-      // Or better:
-      // If the editor content is empty and prop content is not, set it.
-      if (editor.isEmpty && content) {
-        editor.commands.setContent(content);
-      }
+    if (editor && content !== lastOnChange.current) {
+      // Check if the external content is different from what we last emitted.
+      // If it is, it means the parent component changed the content (e.g. reset form, loaded new post).
+      // We must update the editor.
+      editor.commands.setContent(content);
+      // Update our ref so we don't trigger an unnecessary onChange loop
+      lastOnChange.current = content;
     }
   }, [content, editor]);
 

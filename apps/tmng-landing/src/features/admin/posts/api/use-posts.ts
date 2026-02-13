@@ -39,15 +39,10 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (data: any) => {
       const response = await axiosInstance.post(
         API_ENDPOINTS.ADMIN.POSTS.CREATE,
         data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
       );
       return response.data;
     },
@@ -61,15 +56,10 @@ export function useUpdatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: FormData }) => {
-      const response = await axiosInstance.put(
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const response = await axiosInstance.patch(
         API_ENDPOINTS.ADMIN.POSTS.UPDATE(id),
         data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
       );
       return response.data;
     },
