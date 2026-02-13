@@ -2,7 +2,6 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Markdown } from "tiptap-markdown";
 import {
   Bold,
   Italic,
@@ -305,17 +304,15 @@ export function TiptapEditor({
           class: "text-fuchsia-400 hover:text-fuchsia-300 underline",
         },
       }),
-      Markdown,
       Placeholder.configure({
-        placeholder: "Write your post content in Markdown...",
+        placeholder: "Write your post content...",
         emptyEditorClass: "is-editor-empty",
       }),
     ],
     content,
     editable,
     onUpdate: ({ editor }) => {
-      const storage = editor.storage as any;
-      const newContent = storage.markdown.getMarkdown();
+      const newContent = editor.getHTML();
 
       // Only emit if content actually changed
       if (newContent !== lastOnChange.current) {

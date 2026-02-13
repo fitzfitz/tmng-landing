@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { marked } from "marked";
 import { useCreatePost, useUpdatePost, usePost } from "../api/use-posts";
 import { useCategories } from "../../categories/api/use-categories";
 import { useTags } from "../../tags/api/use-tags";
@@ -263,7 +262,7 @@ export function PostEditor({ postId }: PostEditorProps) {
                 <div
                   className="prose prose-invert prose-purple max-w-none p-6 overflow-y-auto h-full"
                   dangerouslySetInnerHTML={{
-                    __html: marked.parse(content || ""),
+                    __html: content || "",
                   }}
                 />
               )}
