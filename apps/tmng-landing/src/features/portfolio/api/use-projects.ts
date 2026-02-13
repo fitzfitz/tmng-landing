@@ -8,8 +8,8 @@ import type {
 
 // API endpoints for projects
 const PROJECTS_ENDPOINTS = {
-  LIST: "/api/projects",
-  DETAIL: (slug: string) => `/api/projects/${slug}`,
+  LIST: "/api/portfolio",
+  DETAIL: (slug: string) => `/api/portfolio/${slug}`,
 } as const;
 
 // Query keys
