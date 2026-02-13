@@ -1,0 +1,9 @@
+
+> @tmng/landing@0.0.1 build D:\Fitz\Misc\tmng-landing\apps\tmng-landing
+> tsc && vite build
+
+src/features/portfolio/api/use-projects.ts(6,3): error TS6196: 'ProjectsListResponse' is declared but never used.
+src/features/portfolio/components/projects-list.tsx(49,31): error TS7006: Parameter 'project' implicitly has an 'any' type.
+src/features/portfolio/components/projects-list.tsx(104,35): error TS7006: Parameter 'tech' implicitly has an 'any' type.
+src/features/portfolio/components/projects-list.tsx(104,41): error TS7006: Parameter 'index' implicitly has an 'any' type.
+ ELIFECYCLE  Command failed with exit code 2.

@@ -7,12 +7,27 @@ import type {
 } from "./portfolio.schema";
 
 export class PortfolioService {
-  static async listPublic() {
-    return await db
+  static async listPublic(page: number = 1, limit: number = 12) {
+    const offset = (page - 1) * limit;
+
+    const items = await db
       .select()
       .from(portfolioItems)
       .where(eq(portfolioItems.status, "published"))
-      .orderBy(desc(portfolioItems.isFeatured), desc(portfolioItems.createdAt));
+      .orderBy(desc(portfolioItems.isFeatured), desc(portfolioItems.createdAt))
+      .limit(limit)
+      .offset(offset);
+
+    // Get total count
+    const allItems = await db
+      .select({ id: portfolioItems.id })
+      .from(portfolioItems)
+      .where(eq(portfolioItems.status, "published"));
+
+    return {
+      items,
+      total: allItems.length,
+    };
   }
 
   static async getPublicBySlug(slug: string) {

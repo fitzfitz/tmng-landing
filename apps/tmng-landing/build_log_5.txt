@@ -1,0 +1,7 @@
+
+> @tmng/landing@0.0.1 build D:\Fitz\Misc\tmng-landing\apps\tmng-landing
+> tsc && vite build
+
+src/features/portfolio/api/use-projects.ts(49,6): error TS1005: ',' expected.
+src/features/portfolio/api/use-projects.ts(49,7): error TS1136: Property assignment expected.
+ ELIFECYCLE  Command failed with exit code 2.

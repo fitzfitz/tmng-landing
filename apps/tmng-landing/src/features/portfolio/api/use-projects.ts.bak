@@ -26,12 +26,27 @@ export const projectsKeys = {
 export function useProjects(params: ProjectsListParams = {}) {
   return useQuery({
     queryKey: projectsKeys.list(params),
-    queryFn: async () => {
+    queryFn: async (): Promise<ProjectsListResponse> => {
       const response = await axiosInstance.get(PROJECTS_ENDPOINTS.LIST, {
         params,
       });
-      return response.data as ProjectsListResponse;
-    },
+
+      // Handle missing pagination from backend
+      const responseData = response.data;
+      if (!responseData.pagination) {
+        return {
+          ...responseData,
+          pagination: {
+            page: 1,
+            limit: responseData.data?.length || 0,
+            total: responseData.data?.length || 0,
+            totalPages: 1,
+          },
+        };
+      }
+
+      return responseData;
+    };,
   });
 }
 

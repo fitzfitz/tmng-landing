@@ -1,0 +1,61 @@
+
+> @tmng/landing@0.0.1 build D:\Fitz\Misc\tmng-landing\apps\tmng-landing
+> tsc && vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 2409 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                         [39m[1m[2m  0.85 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2mdist/[22m[35massets/index-BEd9NGW4.css          [39m[1m[2m 65.60 kB[22m[1m[22m[2m │ gzip:  11.05 kB[22m
+[2mdist/[22m[36massets/loader-circle-Bin76s5z.js   [39m[1m[2m  0.14 kB[22m[1m[22m[2m │ gzip:   0.15 kB[22m
+[2mdist/[22m[36massets/plus-JnfLDSvx.js            [39m[1m[2m  0.15 kB[22m[1m[22m[2m │ gzip:   0.15 kB[22m
+[2mdist/[22m[36massets/arrow-left-CS22MmC2.js      [39m[1m[2m  0.17 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/[22m[36massets/search-BfABm7xW.js          [39m[1m[2m  0.17 kB[22m[1m[22m[2m │ gzip:   0.17 kB[22m
+[2mdist/[22m[36massets/user-BQOO2HUd.js            [39m[1m[2m  0.19 kB[22m[1m[22m[2m │ gzip:   0.18 kB[22m
+[2mdist/[22m[36massets/message-square-C29SOl8V.js  [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/[22m[36massets/page-Dd_sAwif.js            [39m[1m[2m  0.24 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/[22m[36massets/page-SgOPcinT.js            [39m[1m[2m  0.24 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/[22m[36massets/eye-BX4wYj44.js             [39m[1m[2m  0.25 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/[22m[36massets/calendar-Bnah0D_Y.js        [39m[1m[2m  0.26 kB[22m[1m[22m[2m │ gzip:   0.21 kB[22m
+[2mdist/[22m[36massets/list-CExnrUXu.js            [39m[1m[2m  0.30 kB[22m[1m[22m[2m │ gzip:   0.19 kB[22m
+[2mdist/[22m[36massets/tag-B69pHTQt.js             [39m[1m[2m  0.32 kB[22m[1m[22m[2m │ gzip:   0.25 kB[22m
+[2mdist/[22m[36massets/trash-2-DelndGTG.js         [39m[1m[2m  0.33 kB[22m[1m[22m[2m │ gzip:   0.22 kB[22m
+[2mdist/[22m[36massets/image-BaORXSt0.js           [39m[1m[2m  0.34 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2mdist/[22m[36massets/star-Drw-8vL6.js            [39m[1m[2m  0.47 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mdist/[22m[36massets/page-D0VO_XDh.js            [39m[1m[2m  0.55 kB[22m[1m[22m[2m │ gzip:   0.33 kB[22m
+[2mdist/[22m[36massets/page-BOjBOmPg.js            [39m[1m[2m  0.58 kB[22m[1m[22m[2m │ gzip:   0.35 kB[22m
+[2mdist/[22m[36massets/github-6qVIli_L.js          [39m[1m[2m  0.61 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/[22m[36massets/use-projects-E5S1-Qf3.js    [39m[1m[2m  0.67 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/[22m[36massets/use-posts-Dvto1lNp.js       [39m[1m[2m  0.84 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m
+[2mdist/[22m[36massets/use-tags-DL1GNVDE.js        [39m[1m[2m  0.85 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[2mdist/[22m[36massets/use-categories-CZc-380q.js  [39m[1m[2m  0.89 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/[22m[36massets/use-posts-C-Lf0T1u.js       [39m[1m[2m  1.15 kB[22m[1m[22m[2m │ gzip:   0.49 kB[22m
+[2mdist/[22m[36massets/modal-9tJ7mVqw.js           [39m[1m[2m  1.24 kB[22m[1m[22m[2m │ gzip:   0.65 kB[22m
+[2mdist/[22m[36massets/endpoints-DOONTbmF.js       [39m[1m[2m  1.77 kB[22m[1m[22m[2m │ gzip:   0.41 kB[22m
+[2mdist/[22m[36massets/useMutation-DzkJbKjq.js     [39m[1m[2m  2.20 kB[22m[1m[22m[2m │ gzip:   0.90 kB[22m
+[2mdist/[22m[36massets/dropdown-menu-BhK1wYw1.js   [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.20 kB[22m
+[2mdist/[22m[36massets/zod-DQEDSGyL.js             [39m[1m[2m  2.84 kB[22m[1m[22m[2m │ gzip:   1.04 kB[22m
+[2mdist/[22m[36massets/page-CDNC-FmQ.js            [39m[1m[2m  3.41 kB[22m[1m[22m[2m │ gzip:   1.30 kB[22m
+[2mdist/[22m[36massets/page-Bxy1Fa4o.js            [39m[1m[2m  3.71 kB[22m[1m[22m[2m │ gzip:   1.53 kB[22m
+[2mdist/[22m[36massets/page-p5kYp2-W.js            [39m[1m[2m  3.96 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/[22m[36massets/page-KY7JH8mZ.js            [39m[1m[2m  4.35 kB[22m[1m[22m[2m │ gzip:   1.11 kB[22m
+[2mdist/[22m[36massets/page-B7PDHJcp.js            [39m[1m[2m  4.48 kB[22m[1m[22m[2m │ gzip:   1.72 kB[22m
+[2mdist/[22m[36massets/page-kGRg5RqF.js            [39m[1m[2m  4.60 kB[22m[1m[22m[2m │ gzip:   1.71 kB[22m
+[2mdist/[22m[36massets/page-jW5SstWu.js            [39m[1m[2m  4.67 kB[22m[1m[22m[2m │ gzip:   1.51 kB[22m
+[2mdist/[22m[36massets/page-PA01ocMa.js            [39m[1m[2m  6.03 kB[22m[1m[22m[2m │ gzip:   2.03 kB[22m
+[2mdist/[22m[36massets/page-v-9njyCf.js            [39m[1m[2m  6.12 kB[22m[1m[22m[2m │ gzip:   2.15 kB[22m
+[2mdist/[22m[36massets/page-B5-SNi9v.js            [39m[1m[2m  6.63 kB[22m[1m[22m[2m │ gzip:   2.21 kB[22m
+[2mdist/[22m[36massets/page-DSsFfp8p.js            [39m[1m[2m  7.32 kB[22m[1m[22m[2m │ gzip:   2.40 kB[22m
+[2mdist/[22m[36massets/useQuery-DO8LUt5k.js        [39m[1m[2m  8.79 kB[22m[1m[22m[2m │ gzip:   3.19 kB[22m
+[2mdist/[22m[36massets/page-JVNxULTX.js            [39m[1m[2m  9.07 kB[22m[1m[22m[2m │ gzip:   2.81 kB[22m
+[2mdist/[22m[36massets/page-Bsb3PwBp.js            [39m[1m[2m 10.21 kB[22m[1m[22m[2m │ gzip:   3.11 kB[22m
+[2mdist/[22m[36massets/page-Blzob8gL.js            [39m[1m[2m 13.65 kB[22m[1m[22m[2m │ gzip:   3.53 kB[22m
+[2mdist/[22m[36massets/format-D5ebMS61.js          [39m[1m[2m 19.45 kB[22m[1m[22m[2m │ gzip:   5.58 kB[22m
+[2mdist/[22m[36massets/index.esm-CaZSZ2dA.js       [39m[1m[2m 23.53 kB[22m[1m[22m[2m │ gzip:   8.86 kB[22m
+[2mdist/[22m[36massets/axios-DUNrBXo2.js           [39m[1m[2m 96.81 kB[22m[1m[22m[2m │ gzip:  30.79 kB[22m
+[2mdist/[22m[36massets/page-C82VjshR.js            [39m[1m[2m128.63 kB[22m[1m[22m[2m │ gzip:  50.07 kB[22m
+[2mdist/[22m[36massets/post-editor-jtBOBwsl.js     [39m[1m[2m390.48 kB[22m[1m[22m[2m │ gzip: 123.44 kB[22m
+[2mdist/[22m[36massets/index-Dc_EJqgn.js           [39m[1m[2m414.00 kB[22m[1m[22m[2m │ gzip: 134.00 kB[22m
+[32m✓ built in 11.13s[39m

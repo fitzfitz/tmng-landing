@@ -10,8 +10,21 @@ type Variables = {
 const factory = createFactory<{ Variables: Variables }>();
 
 export const listPublicHandler = factory.createHandlers(async (c) => {
-  const items = await PortfolioService.listPublic();
-  return c.json({ success: true, data: items });
+  const page = Number(c.req.query("page") || "1");
+  const limit = Number(c.req.query("limit") || "12");
+
+  const { items, total } = await PortfolioService.listPublic(page, limit);
+
+  return c.json({
+    success: true,
+    data: items,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  });
 });
 
 export const getPublicBySlugHandler = factory.createHandlers(async (c) => {
