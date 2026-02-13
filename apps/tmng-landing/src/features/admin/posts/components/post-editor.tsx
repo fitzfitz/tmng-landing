@@ -15,6 +15,7 @@ import {
   Settings,
   Image as ImageIcon,
 } from "lucide-react";
+import { TiptapEditor } from "./tiptap-editor";
 
 interface PostEditorProps {
   postId?: string;
@@ -239,10 +240,14 @@ export function PostEditor({ postId }: PostEditorProps) {
             </div>
             <div className="flex-1 relative">
               {activeTab === "write" ? (
-                <textarea
-                  {...register("content", { required: "Content is required" })}
-                  className="w-full h-full p-6 bg-transparent text-purple-100 resize-none focus:outline-none font-mono text-sm leading-relaxed"
-                  placeholder="Write your post content in Markdown..."
+                <TiptapEditor
+                  content={content}
+                  onChange={(newContent) =>
+                    setValue("content", newContent, {
+                      shouldDirty: true,
+                      shouldValidate: true,
+                    })
+                  }
                 />
               ) : (
                 <div
